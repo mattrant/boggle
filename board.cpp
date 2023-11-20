@@ -66,6 +66,19 @@ std::ostream& operator<<(std::ostream &os, const Board &b){
     return os;
 }
 
+std::string Board::get_word(std::vector<int> positions){
+    //returns words indicated by the positions
+    if(positions.size()==0){
+        return "";
+    }
+
+    std::string s;
+    for(int i:positions){
+        s.append(spot(i/4,i%4));
+    }
+    return s;
+}
+
 Board::~Board(){
     for(Die* d: dice){
         delete d;

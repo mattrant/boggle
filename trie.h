@@ -1,3 +1,6 @@
+#ifndef TRIE_H
+#define TRIE_H
+
 #include <string>
 
 #include "trie_node.h"
@@ -13,3 +16,4 @@ class Trie{
         void delete_tree(Trie_Node* t);
 };
 
+#endif
