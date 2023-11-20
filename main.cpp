@@ -10,16 +10,6 @@
 
 std::unordered_set<std::string> dict;
 
-void print_board(Board &b)
-{
-    for(int i = 0;i<4;++i){
-        for(int j = 0;j<4;++j){
-            std::cout<<(b.spot(i,j))<<" ";
-        }
-        std::cout<<std::endl;
-    }
-}
-
 std::string get_word(Board &b, std::vector<int> &positions)
 {
     //returns words indicated by the positions
@@ -42,7 +32,7 @@ void DFS_path(Board &b, int node, std::vector<std::vector<int>> &adj, std::vecto
     if(!t.prefix_present(word)){
         return;
     }
-    if(t.is_present(word)){
+    if(t.is_present(word) && word.size()>=3){
         dict.insert(word);
     }
     for(int i: adj[node]){
@@ -116,10 +106,10 @@ void print_dict(){
 }
 
 int main(){
-    // Board b;
-    // b.shake();
-    // Trie t("dictionary.txt");
-    // print_board(b);
-    // get_words(b,t);
-    // print_dict();
+     Board b;
+     b.shake();
+     Trie t("../engmix.txt");
+     std::cout<<b<<std::endl;
+     get_words(b,t);
+     print_dict();
 }

@@ -14,7 +14,7 @@ Trie::Trie(std::string file_name)
         adj[i] = new Trie_Node(char(i+int('A')));
     }
 
-    std::ifstream infile("words.txt");
+    std::ifstream infile(file_name);
     std::string line;
     while(std::getline(infile,line)){
         if(std::all_of(std::begin(line),std::end(line),[](char c){return std::isalpha(c);})){

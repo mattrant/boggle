@@ -46,7 +46,7 @@ void Board::shake()
     }
 }
 
-std::string Board::spot(int i, int j){
+std::string Board::spot(int i, int j) const{
     /*
     Returns the die at position (i,j) on the 4x4 board. The top left
     corner is considered to be (0,0).
@@ -54,6 +54,16 @@ std::string Board::spot(int i, int j){
     assert(i<4 && i>=0 && j<4 && j>=0);
     
     return dice[4*i+j]->get_top();
+}
+
+std::ostream& operator<<(std::ostream &os, const Board &b){
+    for(int i = 0;i<4;++i){
+        for(int j = 0;j<4;++j){
+            os<<(b.spot(i,j))<<" ";
+        }
+        std::cout<<std::endl;
+    }
+    return os;
 }
 
 Board::~Board(){
