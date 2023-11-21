@@ -14,7 +14,7 @@ class Die
     public:
         Die(std::string faces);
         void roll();
-        std::string get_top();
+        std::string get_top() const;
 };
 
 #endif

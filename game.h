@@ -28,18 +28,16 @@ class Game : public QObject
         QTimer t;
         Ui::MainWindow ui;
 
-        void DFS_path(int node, std::vector<int> path, Trie &t);
+        void DFS_path(int node, std::vector<int> path, const Trie &t);
         void init_adj();
-        std::string found_words_string();
         void init_game();
 
     public:
 
         Game(Ui::MainWindow &ui);
         ~Game();
-        void print_game();
-        void print_dict();
-        std::unordered_set<std::string> get_dict();
+        void print_game() const;
+        void print_dict() const;
 
     private slots:
         void update_timer();

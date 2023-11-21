@@ -6,7 +6,7 @@
 
 #include "board.h"
 #include "die.h"
-//TODO: use unique_ptr or learn to implement constructor and assignment/copy operators for rule of 5
+
 Board::Board()
 {
     std::vector<std::string> die_faces = {
@@ -66,7 +66,7 @@ std::ostream& operator<<(std::ostream &os, const Board &b){
     return os;
 }
 
-std::string Board::get_word(std::vector<int> positions){
+std::string Board::get_word(std::vector<int> positions) const{
     //returns words indicated by the positions
     if(positions.size()==0){
         return "";

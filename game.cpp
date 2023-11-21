@@ -113,7 +113,7 @@ void Game::end_game(){
         all_words.append("You found "+std::to_string(100*found.size()/dict.size())+" percent of all words\n");
 
         std::vector<std::string> words[17];
-        for(std::string s: get_dict()){
+        for(std::string s: dict){
             words[s.size()].push_back(s);
         }
         for(int i =3;i<17;++i){
@@ -160,7 +160,7 @@ void Game::check_guess(){
     guess = "";
 }
 
-void Game::print_dict(){
+void Game::print_dict() const{
     std::vector<std::string> words[17];
     for(std::string s: dict){
         words[s.size()].push_back(s);
@@ -177,7 +177,7 @@ void Game::print_dict(){
     }
 }
 
-void Game::DFS_path(int node, std::vector<int> path, Trie &t){
+void Game::DFS_path(int node, std::vector<int> path, const Trie &t){
     //perform DFS to determine all words by determining all paths
     path.push_back(node);
     std::string word = b->get_word(path);
@@ -231,12 +231,10 @@ void Game::init_adj()
     }
 }
 
-void Game::print_game(){
+void Game::print_game() const{
     std::cout<<*b<<std::endl;
     print_dict();
 }
-
-std::unordered_set<std::string> Game::get_dict(){return dict;}
 
 void Game::update_timer(){
     if(time_left == QTime(0,0,0)|| paused){

@@ -16,7 +16,7 @@ class Board
 
         void shake();
         std::string spot(int i, int j) const;
-        std::string get_word(std::vector<int> positions);
+        std::string get_word(std::vector<int> positions) const;
 
         friend std::ostream& operator<<(std::ostream &os, const Board &b);
 };

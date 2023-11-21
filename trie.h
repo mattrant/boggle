@@ -11,8 +11,8 @@ class Trie{
         Trie(std::string file_name);
 //        ~Trie();
         void insert(std::string s);
-        bool is_present(std::string s);
-        bool prefix_present(std::string s);
+        bool is_present(std::string s) const;
+        bool prefix_present(std::string s) const;
     private:
 //        void delete_tree(Trie_Node* t);
 };

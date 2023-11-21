@@ -39,7 +39,7 @@ void Trie::insert(std::string s)
     }
     curr->ends_word = true;
 }
-bool Trie::is_present(std::string s){
+bool Trie::is_present(std::string s) const{
     
     assert(s.size()!=0);
     //ensures the strings are in all caps
@@ -56,7 +56,7 @@ bool Trie::is_present(std::string s){
 
 }
 
-bool Trie::prefix_present(std::string s){
+bool Trie::prefix_present(std::string s) const{
     assert(s.size()!=0);
     std::transform(s.begin(),s.end(),s.begin(),::toupper);
 
