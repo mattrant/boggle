@@ -9,12 +9,11 @@
 
 
 
-int main(int argc,char*argv[]){
+int main(int argc,char** argv){
 
     Ui::MainWindow ui;
     QApplication app(argc,argv);
     QMainWindow window;
-
     ui.setupUi(&window);
 
     Game g(ui);

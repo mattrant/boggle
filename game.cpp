@@ -14,21 +14,23 @@ Game::Game(Ui::MainWindow &ui)
     QObject::connect(ui.give_up_button,&QPushButton::clicked,this,&Game::end_game);
     QObject::connect(ui.pause_button,&QPushButton::clicked,this,&Game::pause_game);
 
-    b = NULL;
     init_adj();
+    b = new Board();
     init_game();
 
 }
 
 void Game::init_game(){
     guess = "";
-    b = new Board();
     is_over = false;
     started = false;
     paused = false;
+    dict = {};
+    found = {};
 
+    ui.pause_button->setText("Pause");
 
-    time_left = QTime(0,1,0);
+    time_left = QTime(0,3,0);
 
     b->shake();
     Trie t("../engmix.txt");
@@ -76,7 +78,6 @@ void Game::guess_edited(const QString &text){
 void Game::start_game(){
     if(started || is_over){
         //Start new game
-        delete this->b;
         ui.found_words_label->setText("");
         ui.input_line->setText("");
         init_game();
@@ -107,6 +108,10 @@ void Game::end_game(){
         ui.timer_display->display("0");
 
         std::string all_words = ui.found_words_label->text().toStdString()+"\n";
+
+        all_words.append("----------------------\n");
+        all_words.append("You found "+std::to_string(100*found.size()/dict.size())+" percent of all words\n");
+
         std::vector<std::string> words[17];
         for(std::string s: get_dict()){
             words[s.size()].push_back(s);
@@ -128,6 +133,7 @@ void Game::end_game(){
         }
 
         ui.found_words_label->setText(QString::fromStdString(all_words));
+        ui.found_words_label->adjustSize();
 
     }
 

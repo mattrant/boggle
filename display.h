@@ -20,6 +20,7 @@
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QWidget>
 #include <vector>
+
 QT_BEGIN_NAMESPACE
 
 class Ui_MainWindow
@@ -44,26 +45,26 @@ public:
     QLabel *label_7;
     QLabel *label_11;
     QLabel *label_15;
-    std::vector<QLabel*> grid;
     QPushButton *start_button;
     QPushButton *pause_button;
-    QPushButton *save_button;
     QLineEdit *input_line;
     QLabel *found_words_label;
     QLCDNumber *timer_display;
     QPushButton *give_up_button;
     QStatusBar *statusbar;
 
+    std::vector<QLabel*> grid;
+
     void setupUi(QMainWindow *MainWindow)
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(800, 600);
+        MainWindow->resize(861, 664);
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         gridLayoutWidget = new QWidget(centralwidget);
         gridLayoutWidget->setObjectName(QString::fromUtf8("gridLayoutWidget"));
-        gridLayoutWidget->setGeometry(QRect(270, 80, 288, 191));
+        gridLayoutWidget->setGeometry(QRect(340, 120, 231, 151));
         board_display = new QGridLayout(gridLayoutWidget);
         board_display->setObjectName(QString::fromUtf8("board_display"));
         board_display->setContentsMargins(0, 0, 0, 0);
@@ -153,21 +154,18 @@ public:
         pause_button = new QPushButton(centralwidget);
         pause_button->setObjectName(QString::fromUtf8("pause_button"));
         pause_button->setGeometry(QRect(160, 310, 89, 25));
-        save_button = new QPushButton(centralwidget);
-        save_button->setObjectName(QString::fromUtf8("save_button"));
-        save_button->setGeometry(QRect(160, 340, 89, 25));
         input_line = new QLineEdit(centralwidget);
         input_line->setObjectName(QString::fromUtf8("input_line"));
-        input_line->setGeometry(QRect(360, 50, 113, 25));
+        input_line->setGeometry(QRect(400, 90, 113, 25));
         found_words_label = new QLabel(centralwidget);
         found_words_label->setObjectName(QString::fromUtf8("found_words_label"));
-        found_words_label->setGeometry(QRect(276, 296, 281, 251));
+        found_words_label->setGeometry(QRect(260, 290, 411, 301));
         timer_display = new QLCDNumber(centralwidget);
         timer_display->setObjectName(QString::fromUtf8("timer_display"));
-        timer_display->setGeometry(QRect(580, 50, 64, 23));
+        timer_display->setGeometry(QRect(420, 60, 64, 23));
         give_up_button = new QPushButton(centralwidget);
         give_up_button->setObjectName(QString::fromUtf8("give_up_button"));
-        give_up_button->setGeometry(QRect(160, 370, 89, 25));
+        give_up_button->setGeometry(QRect(160, 340, 89, 25));
         MainWindow->setCentralWidget(centralwidget);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName(QString::fromUtf8("statusbar"));
@@ -197,14 +195,12 @@ public:
         label_7->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
         label_11->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
         label_15->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
-
-        grid = {label_0,label_1,label_2,label_3,label_4,label_5,label_6,label_7,label_8,label_9,label_10,label_11,label_12,label_13,label_14,label_15};
-
-        start_button->setText(QCoreApplication::translate("MainWindow", "Start", nullptr));
+        start_button->setText(QCoreApplication::translate("MainWindow", "New Game", nullptr));
         pause_button->setText(QCoreApplication::translate("MainWindow", "Pause", nullptr));
-        save_button->setText(QCoreApplication::translate("MainWindow", "Save", nullptr));
         found_words_label->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
         give_up_button->setText(QCoreApplication::translate("MainWindow", "Give Up", nullptr));
+
+        grid = {label_0,label_1,label_2,label_3,label_4,label_5,label_6,label_7,label_8,label_9,label_10,label_11,label_12,label_13,label_14,label_15};
     } // retranslateUi
 
 };

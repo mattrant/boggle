@@ -16,6 +16,7 @@
 class Game : public QObject
 {
     private:
+        Board *b;
         std::string guess;
         bool started;
         bool is_over;
@@ -33,22 +34,22 @@ class Game : public QObject
         void init_game();
 
     public:
-        Board *b;
+
 
         Game(Ui::MainWindow &ui);
         ~Game();
         void print_game();
         void print_dict();
+        std::unordered_set<std::string> get_dict();
     private slots:
         void update_timer();
-
-    public slots:
         void guess_edited(const QString &text);
         void check_guess();
         void end_game();
         void start_game();
         void pause_game();
-        std::unordered_set<std::string> get_dict();
+
+
 
 };
 
