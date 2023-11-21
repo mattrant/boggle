@@ -1,12 +1,34 @@
 #include "game.h"
+#include "display.h"
 
-Game::Game()
+Game::Game(Ui::MainWindow &ui)
 {
+    this->ui = ui;
+    ui.found_words_label->setWordWrap(true);
+    ui.found_words_label->setText(" ");
+
+    QObject::connect(&t,&QTimer::timeout,this,&Game::update_timer);
+    QObject::connect(ui.input_line,&QLineEdit::textEdited,this,&Game::guess_edited);
+    QObject::connect(ui.input_line,&QLineEdit::returnPressed,this,&Game::check_guess);
+    QObject::connect(ui.start_button,&QPushButton::clicked,this,&Game::start_game);
+    QObject::connect(ui.give_up_button,&QPushButton::clicked,this,&Game::end_game);
+    QObject::connect(ui.pause_button,&QPushButton::clicked,this,&Game::pause_game);
+
+    b = NULL;
+    init_adj();
+    init_game();
+
+}
+
+void Game::init_game(){
     guess = "";
     b = new Board();
     is_over = false;
+    started = false;
+    paused = false;
 
-    init_adj();
+
+    time_left = QTime(0,1,0);
 
     b->shake();
     Trie t("../engmix.txt");
@@ -15,19 +37,119 @@ Game::Game()
         DFS_path(i,v,t);
     }
 
+    for(int i = 0;i<16;++i){
+        ui.grid[i]->setText(QString::fromStdString("_"));
+    }
 }
+
 Game::~Game(){
     delete this->b;
 }
+
+void Game::pause_game(){
+    if(!started || is_over){
+        return;
+    }
+    if(paused){
+       paused= false;
+       ui.pause_button->setText("Pause");
+       for(int i = 0;i<16;++i){
+           ui.grid[i]->setText(QString::fromStdString(b->spot(i/4,i%4)));
+       }
+       t.start(1000);
+    }
+    else{
+        paused = true;
+        ui.pause_button->setText("Resume");
+
+        for(int i = 0;i<16;++i){
+            ui.grid[i]->setText(QString::fromStdString("_"));
+        }
+    }
+}
+
 void Game::guess_edited(const QString &text){
     guess = text.toStdString();
+    std::transform(guess.begin(),guess.end(),guess.begin(),::toupper);
+}
+
+void Game::start_game(){
+    if(started || is_over){
+        //Start new game
+        delete this->b;
+        ui.found_words_label->setText("");
+        ui.input_line->setText("");
+        init_game();
+        started=true;
+
+        for(int i = 0;i<16;++i){
+            ui.grid[i]->setText(QString::fromStdString(b->spot(i/4,i%4)));
+        }
+        ui.timer_display->display(time_left.toString("m.ss"));
+        t.start(1000);
+        return;
+    }
+
+    ui.start_button->setText("New Game");
+    started=true;
+
+    for(int i = 0;i<16;++i){
+        ui.grid[i]->setText(QString::fromStdString(b->spot(i/4,i%4)));
+    }
+    ui.timer_display->display(time_left.toString("m.ss"));
+    t.start(1000);
+}
+
+void Game::end_game(){
+    if(started && !is_over){
+        is_over = true;
+        time_left = QTime(0,0,0);
+        ui.timer_display->display("0");
+
+        std::string all_words = ui.found_words_label->text().toStdString()+"\n";
+        std::vector<std::string> words[17];
+        for(std::string s: get_dict()){
+            words[s.size()].push_back(s);
+        }
+        for(int i =3;i<17;++i){
+            if(words[i].size()==0){
+                continue;
+            }
+
+            all_words.append("----------------------\n");
+            std::sort(words[i].begin(),words[i].end());
+            for(std::string s:words[i]){
+                if(found.find(s)==found.end()){
+                    all_words.append(s+" ");
+                }
+
+            }
+            all_words.append("\n");
+        }
+
+        ui.found_words_label->setText(QString::fromStdString(all_words));
+
+    }
+
 }
 
 void Game::check_guess(){
 
-    if(found.find(guess) == found.end() && dict.find(guess)!=dict.end()){
-        //TODO: add word to 'found' box
+    if(!started || is_over){
+        return;
+    }
+
+    ui.input_line->setText("");
+
+    if(dict.find(guess)!=dict.end() && found.find(guess)==found.end()){
         found.insert(guess);
+        if(found.size()!=1){
+            ui.found_words_label->setText(ui.found_words_label->text()+" "+ QString::fromStdString(guess));
+        }
+        else{
+            ui.found_words_label->setText(QString::fromStdString(guess));
+        }
+
     }
     guess = "";
 }
@@ -38,6 +160,9 @@ void Game::print_dict(){
         words[s.size()].push_back(s);
     }
     for(int i =3;i<17;++i){
+        if(words[i].size()==0){
+            continue;
+        }
         std::cout<<"Words of length "<<i<<std::endl;
         std::sort(words[i].begin(),words[i].end());
         for(std::string s:words[i]){
@@ -105,10 +230,24 @@ void Game::print_game(){
     print_dict();
 }
 
+std::unordered_set<std::string> Game::get_dict(){return dict;}
 
+void Game::update_timer(){
+    if(time_left == QTime(0,0,0)|| paused){
+        return;
+    }
 
+    time_left = time_left.addSecs(-1);
+    QString s = time_left.toString("m.ss");
+    ui.timer_display->display(time_left.toString("m.ss"));
 
-
+    if(time_left!=QTime(0,0,0)){
+         t.start(1000);
+    }
+    else{
+        end_game();
+    }
+}
 
 
 
