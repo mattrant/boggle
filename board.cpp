@@ -29,7 +29,7 @@ Board::Board()
     };
 
     for(int i = 0;i<16;++i){
-        dice.push_back( new Die(die_faces[i]));
+        dice.push_back( std::unique_ptr<Die>(new Die(die_faces[i])));
     }
 
 }
@@ -41,7 +41,7 @@ void Board::shake()
     std::mt19937 g(rd());
     std::shuffle(dice.begin(), dice.end(),g);
 
-    for(Die* d:dice){
+    for(auto const &d:dice){
         d->roll();
     }
 }
@@ -79,8 +79,3 @@ std::string Board::get_word(std::vector<int> positions){
     return s;
 }
 
-Board::~Board(){
-    for(Die* d: dice){
-        delete d;
-    }
-}

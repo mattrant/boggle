@@ -15,7 +15,7 @@ Game::Game(Ui::MainWindow &ui)
     QObject::connect(ui.pause_button,&QPushButton::clicked,this,&Game::pause_game);
 
     init_adj();
-    b = new Board();
+    b = std::unique_ptr<Board>(new Board());
     init_game();
 
 }
@@ -45,7 +45,7 @@ void Game::init_game(){
 }
 
 Game::~Game(){
-    delete this->b;
+    //delete this->b;
 }
 
 void Game::pause_game(){

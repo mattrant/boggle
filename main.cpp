@@ -8,7 +8,6 @@
 #include <stdlib.h>
 
 
-
 int main(int argc,char** argv){
 
     Ui::MainWindow ui;
