@@ -14,6 +14,7 @@ Trie::Trie(std::string file_name)
         adj[i] = std::unique_ptr<Trie_Node> (new Trie_Node(char(i+int('A'))));
     }
 
+
     std::ifstream infile(file_name);
     std::string line;
     while(std::getline(infile,line)){
@@ -42,7 +43,6 @@ void Trie::insert(std::string s)
 bool Trie::is_present(std::string s) const{
     
     assert(s.size()!=0);
-    //ensures the strings are in all caps
     std::transform(s.begin(),s.end(),s.begin(),::toupper);
     
     Trie_Node* curr = adj[int(s[0])-int('A')].get();

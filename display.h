@@ -19,6 +19,7 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QWidget>
+
 #include <vector>
 
 QT_BEGIN_NAMESPACE
@@ -52,7 +53,6 @@ public:
     QLCDNumber *timer_display;
     QPushButton *give_up_button;
     QStatusBar *statusbar;
-
     std::vector<QLabel*> grid;
 
     void setupUi(QMainWindow *MainWindow)
@@ -201,6 +201,7 @@ public:
         give_up_button->setText(QCoreApplication::translate("MainWindow", "Give Up", nullptr));
 
         grid = {label_0,label_1,label_2,label_3,label_4,label_5,label_6,label_7,label_8,label_9,label_10,label_11,label_12,label_13,label_14,label_15};
+
     } // retranslateUi
 
 };

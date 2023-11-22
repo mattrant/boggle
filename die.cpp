@@ -6,11 +6,6 @@
 
 Die::Die(std::string faces)
 {   
-    /*
-    Initializes the sides of the die with the given faces
-
-    faces: a string of 6 characters that give the faces on the die
-    */
     this->faces = faces;
 }
 void Die::roll()
@@ -23,4 +18,4 @@ void Die::roll()
     std::string top{this->faces[dist(gen)]};
     this-> top = top == "Q"? "QU": top;
 }
-std::string Die::get_top() const{ return this->top;}
+std::string Die::get_top() const{ return top;}

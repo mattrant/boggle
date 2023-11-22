@@ -33,6 +33,8 @@ void Game::init_game(){
     time_left = QTime(0,3,0);
 
     b->shake();
+
+    //find the words on the board by checking all possible paths
     Trie t("../engmix.txt");
     for(int i = 0;i<16;++i){
         std::vector<int> v;
@@ -162,9 +164,12 @@ void Game::check_guess(){
 
 void Game::print_dict() const{
     std::vector<std::string> words[17];
+
+
     for(std::string s: dict){
         words[s.size()].push_back(s);
     }
+    //boggle only cares about words of length 3 or more
     for(int i =3;i<17;++i){
         if(words[i].size()==0){
             continue;
@@ -181,6 +186,8 @@ void Game::DFS_path(int node, std::vector<int> path, const Trie &t){
     //perform DFS to determine all words by determining all paths
     path.push_back(node);
     std::string word = b->get_word(path);
+
+    //most paths fail to give actual words after the first few letters so this quickly allows us to disregard many paths quickly
     if(!t.prefix_present(word)){
         return;
     }
@@ -198,10 +205,13 @@ void Game::DFS_path(int node, std::vector<int> path, const Trie &t){
 
 void Game::init_adj()
 {
-   //init adjacency lists
+
+    //board is 4x4 and this way allows a quick nested loop intialization of the adjacency lists
     std::vector<int> v = {0,1,2,3};
     std::vector<int> m = {-1,0,1};
 
+
+    //graph is relatively sparse, so we use adjaceny lists
     for(int i = 0; i<16;++i)
     {
         std::vector<int> x;
@@ -241,6 +251,7 @@ void Game::update_timer(){
         return;
     }
 
+    //QTime objects must be updated by getting a new QTime object from the old one
     time_left = time_left.addSecs(-1);
     QString s = time_left.toString("m.ss");
     ui.timer_display->display(time_left.toString("m.ss"));

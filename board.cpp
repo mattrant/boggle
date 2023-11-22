@@ -36,7 +36,6 @@ Board::Board()
 
 void Board::shake()
 {
-    //shake the dice in the board
     std::random_device rd;
     std::mt19937 g(rd());
     std::shuffle(dice.begin(), dice.end(),g);
@@ -47,10 +46,7 @@ void Board::shake()
 }
 
 std::string Board::spot(int i, int j) const{
-    /*
-    Returns the die at position (i,j) on the 4x4 board. The top left
-    corner is considered to be (0,0).
-    */
+
     assert(i<4 && i>=0 && j<4 && j>=0);
     
     return dice[4*i+j]->get_top();
